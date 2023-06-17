@@ -1,4 +1,4 @@
-package logger
+package log
 
 import (
 	"fmt"
@@ -12,11 +12,10 @@ import (
 
 var (
 	MaxBackups = 3
-	channel    *Channel
+	channel    *Options
 )
 
-// NewChannel Log channel
-func NewChannel(c *Channel) *zap.Logger {
+func NewChannel(c *Options) *zap.Logger {
 	channel = c
 
 	// Get log writer
