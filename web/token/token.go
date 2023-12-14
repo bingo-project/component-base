@@ -40,46 +40,6 @@ func Init(secretKey string, ttl uint) {
 	})
 }
 
-// Parse token by secret key.
-func Parse(tokenString string, key string) (*CustomClaims, error) {
-	// Parse token
-	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, jwt.ErrSignatureInvalid
-		}
-
-		return []byte(key), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
-		return claims, nil
-	}
-
-	return nil, ErrTokenInvalid
-}
-
-// ParseRequest Parse token from request header.
-func ParseRequest(c *gin.Context) (*CustomClaims, error) {
-	header := c.Request.Header.Get("Authorization")
-
-	if len(header) == 0 {
-		return nil, ErrMissingHeader
-	}
-
-	var t string
-
-	// Get token from header
-	_, err := fmt.Sscanf(header, "Bearer %s", &t)
-	if err != nil {
-		return nil, err
-	}
-
-	return Parse(t, config.SecretKey)
-}
-
 // Sign a token by jwt secret.
 func Sign(subject string, info interface{}) (*Response, error) {
 	// Register claims
@@ -109,4 +69,51 @@ func Sign(subject string, info interface{}) (*Response, error) {
 	}
 
 	return resp, err
+}
+
+// ParseRequest Parse token from request header.
+func ParseRequest(c *gin.Context) (*CustomClaims, error) {
+	t := GetBearerToken(c)
+
+	return Parse(t, config.SecretKey)
+}
+
+// GetBearerToken Get bearer token from request header.
+func GetBearerToken(c *gin.Context) string {
+	header := c.Request.Header.Get("Authorization")
+
+	if len(header) == 0 {
+		return ""
+	}
+
+	var t string
+
+	// Get token from header
+	_, err := fmt.Sscanf(header, "Bearer %s", &t)
+	if err != nil {
+		return ""
+	}
+
+	return t
+}
+
+// Parse token by secret key.
+func Parse(tokenString string, key string) (*CustomClaims, error) {
+	// Parse token
+	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, jwt.ErrSignatureInvalid
+		}
+
+		return []byte(key), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
+		return claims, nil
+	}
+
+	return nil, ErrTokenInvalid
 }
