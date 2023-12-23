@@ -3,13 +3,8 @@ package gormutil
 // DefaultLimit define the default number of records to be retrieved.
 const DefaultLimit = 15
 
-// LimitAndOffset contains offset and limit fields.
-type LimitAndOffset struct {
-	Offset int
-	Limit  int
-}
-
-type ListRequest struct {
+// ListOptions contains offset and limit fields.
+type ListOptions struct {
 	// Page
 	Page int `form:"page"`
 
@@ -26,13 +21,8 @@ type ListRequest struct {
 	Sort string `form:"sort"`
 }
 
-type ListResponse struct {
-	Total int64 `json:"total"`
-	Data  any   `json:"data"`
-}
-
-// SetDefaultParams Set default params if not exist.
-func (req *ListRequest) SetDefaultParams() {
+// SetDefaultOptions Set default options if not exist.
+func (req *ListOptions) SetDefaultOptions() {
 	// Sort
 	if req.Sort == "" {
 		req.Sort = "id"

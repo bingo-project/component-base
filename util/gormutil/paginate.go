@@ -5,11 +5,9 @@ import (
 )
 
 // Paginate the query.
-func Paginate(db *gorm.DB, req *ListRequest, data any) (res *ListResponse, err error) {
+func Paginate(db *gorm.DB, req *ListOptions, data any) (count int64, err error) {
 	// Set default params
-	req.SetDefaultParams()
-
-	var count int64
+	req.SetDefaultOptions()
 
 	// Query
 	err = db.Order(req.Sort + " " + req.Order).
@@ -20,17 +18,14 @@ func Paginate(db *gorm.DB, req *ListRequest, data any) (res *ListResponse, err e
 		Limit(-1).
 		Count(&count).
 		Error
-	if err != nil {
-		return nil, err
-	}
 
-	return &ListResponse{Total: count, Data: data}, nil
+	return
 }
 
 // Paginator returns a gorm scope paginator.
-func Paginator(req *ListRequest) func(db *gorm.DB) *gorm.DB {
+func Paginator(req *ListOptions) func(db *gorm.DB) *gorm.DB {
 	// Set default params
-	req.SetDefaultParams()
+	req.SetDefaultOptions()
 
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Offset(req.Offset).Limit(req.Limit)
