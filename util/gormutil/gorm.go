@@ -14,10 +14,10 @@ type ListOptions struct {
 	// Limit
 	Limit int `form:"limit"`
 
-	// Order by field.
+	// Order asc or desc.
 	Order string `form:"order"`
 
-	// Sort: asc or desc.
+	// Sort field.
 	Sort string `form:"sort"`
 }
 
