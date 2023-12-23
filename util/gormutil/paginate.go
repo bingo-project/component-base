@@ -27,8 +27,8 @@ func Paginate(db *gorm.DB, req *ListRequest, data any) (res *ListResponse, err e
 	return &ListResponse{Total: count, Data: data}, nil
 }
 
-// Scope returns a gorm scope.
-func Scope(req *ListRequest) func(db *gorm.DB) *gorm.DB {
+// Paginator returns a gorm scope paginator.
+func Paginator(req *ListRequest) func(db *gorm.DB) *gorm.DB {
 	// Set default params
 	req.SetDefaultParams()
 
