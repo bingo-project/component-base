@@ -97,6 +97,11 @@ func GetBearerToken(c *gin.Context) string {
 	return t
 }
 
+// ParseToken Parse given token.
+func ParseToken(c *gin.Context, token string) (*CustomClaims, error) {
+	return Parse(token, config.SecretKey)
+}
+
 // Parse token by secret key.
 func Parse(tokenString string, key string) (*CustomClaims, error) {
 	// Parse token
