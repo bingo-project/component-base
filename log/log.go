@@ -4,15 +4,31 @@ import (
 	"sync"
 
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type Logger interface {
+	Debug(msg string, fields ...zapcore.Field)
+	Info(msg string, fields ...zapcore.Field)
+	Warn(msg string, fields ...zapcore.Field)
+	Error(msg string, fields ...zapcore.Field)
+	Panic(msg string, fields ...zapcore.Field)
+	Fatal(msg string, fields ...zapcore.Field)
+
+	Debugf(format string, v ...interface{})
+	Infof(format string, v ...interface{})
+	Warnf(format string, v ...interface{})
+	Errorf(format string, v ...interface{})
+	Panicf(format string, v ...interface{})
+	Fatalf(format string, v ...interface{})
+
 	Debugw(msg string, keysAndValues ...interface{})
 	Infow(msg string, keysAndValues ...interface{})
 	Warnw(msg string, keysAndValues ...interface{})
 	Errorw(msg string, keysAndValues ...interface{})
 	Panicw(msg string, keysAndValues ...interface{})
 	Fatalw(msg string, keysAndValues ...interface{})
+
 	Sync()
 }
 
@@ -52,6 +68,102 @@ func Sync() { std.Sync() }
 
 func (l *zapLogger) Sync() {
 	_ = l.z.Sync()
+}
+
+func Debug(msg string, fields ...zapcore.Field) {
+	std.z.Debug(msg, fields...)
+}
+
+func (l *zapLogger) Debug(msg string, fields ...zapcore.Field) {
+	l.z.Debug(msg, fields...)
+}
+
+func Info(msg string, fields ...zapcore.Field) {
+	std.z.Info(msg, fields...)
+}
+
+func (l *zapLogger) Info(msg string, fields ...zapcore.Field) {
+	l.z.Info(msg, fields...)
+}
+
+func Warn(msg string, fields ...zapcore.Field) {
+	std.z.Warn(msg, fields...)
+}
+
+func (l *zapLogger) Warn(msg string, fields ...zapcore.Field) {
+	l.z.Warn(msg, fields...)
+}
+
+func Error(msg string, fields ...zapcore.Field) {
+	std.z.Error(msg, fields...)
+}
+
+func (l *zapLogger) Error(msg string, fields ...zapcore.Field) {
+	l.z.Error(msg, fields...)
+}
+
+func Panic(msg string, fields ...zapcore.Field) {
+	std.z.Panic(msg, fields...)
+}
+
+func (l *zapLogger) Panic(msg string, fields ...zapcore.Field) {
+	l.z.Panic(msg, fields...)
+}
+
+func Fatal(msg string, fields ...zapcore.Field) {
+	std.z.Fatal(msg, fields...)
+}
+
+func (l *zapLogger) Fatal(msg string, fields ...zapcore.Field) {
+	l.z.Fatal(msg, fields...)
+}
+
+func Debugf(format string, v ...interface{}) {
+	std.z.Sugar().Debugf(format, v...)
+}
+
+func (l *zapLogger) Debugf(format string, v ...interface{}) {
+	l.z.Sugar().Debugf(format, v...)
+}
+
+func Infof(format string, v ...interface{}) {
+	std.z.Sugar().Infof(format, v...)
+}
+
+func (l *zapLogger) Infof(format string, v ...interface{}) {
+	l.z.Sugar().Infof(format, v...)
+}
+
+func Warnf(format string, v ...interface{}) {
+	std.z.Sugar().Warnf(format, v...)
+}
+
+func (l *zapLogger) Warnf(format string, v ...interface{}) {
+	l.z.Sugar().Warnf(format, v...)
+}
+
+func Errorf(format string, v ...interface{}) {
+	std.z.Sugar().Errorf(format, v...)
+}
+
+func (l *zapLogger) Errorf(format string, v ...interface{}) {
+	l.z.Sugar().Errorf(format, v...)
+}
+
+func Panicf(format string, v ...interface{}) {
+	std.z.Sugar().Panicf(format, v...)
+}
+
+func (l *zapLogger) Panicf(format string, v ...interface{}) {
+	l.z.Sugar().Panicf(format, v...)
+}
+
+func Fatalf(format string, v ...interface{}) {
+	std.z.Sugar().Fatalf(format, v...)
+}
+
+func (l *zapLogger) Fatalf(format string, v ...interface{}) {
+	l.z.Sugar().Fatalf(format, v...)
 }
 
 func Debugw(msg string, keysAndValues ...interface{}) {
