@@ -1,6 +1,9 @@
 package log
 
-import "go.uber.org/zap/zapcore"
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
 
 type Options struct {
 	Level    string `mapstructure:"level" json:"level" yaml:"level"`
@@ -22,4 +25,12 @@ func NewDefaultOptions() *Options {
 		Compress: false,
 		Path:     "/dev/null",
 	}
+}
+
+func (l *zapLogger) WithOption(opts zap.Option) *zapLogger {
+	lc := l.clone()
+
+	lc.z = lc.z.WithOptions(opts)
+
+	return lc
 }

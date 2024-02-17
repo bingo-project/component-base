@@ -1,6 +1,7 @@
 package log
 
 import (
+	"log"
 	"sync"
 
 	"go.uber.org/zap"
@@ -62,6 +63,37 @@ func NewLogger(opts *Options) *zapLogger {
 	zap.RedirectStdLog(z)
 
 	return l
+}
+
+// SugaredLogger returns global sugared logger.
+func SugaredLogger() *zap.SugaredLogger {
+	return std.z.Sugar()
+}
+
+// StdErrLogger returns logger of standard library which writes to supplied zap
+// logger at error level.
+func StdErrLogger() *log.Logger {
+	if std == nil {
+		return nil
+	}
+	if l, err := zap.NewStdLogAt(std.z, zapcore.ErrorLevel); err == nil {
+		return l
+	}
+
+	return nil
+}
+
+// StdInfoLogger returns logger of standard library which writes to supplied zap
+// logger at info level.
+func StdInfoLogger() *log.Logger {
+	if std == nil {
+		return nil
+	}
+	if l, err := zap.NewStdLogAt(std.z, zapcore.InfoLevel); err == nil {
+		return l
+	}
+
+	return nil
 }
 
 func Sync() { std.Sync() }
