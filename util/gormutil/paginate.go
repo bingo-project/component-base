@@ -2,6 +2,7 @@ package gormutil
 
 import (
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // Paginate the query.
@@ -10,7 +11,7 @@ func Paginate(db *gorm.DB, req *ListOptions, data any) (count int64, err error) 
 	req.SetDefaultOptions()
 
 	// Query
-	err = db.Order(req.Sort + " " + req.Order).
+	err = db.Order(clause.OrderByColumn{Column: clause.Column{Name: req.Sort}, Desc: req.Order == DESC}).
 		Offset(req.Offset).
 		Limit(req.Limit).
 		Find(data).

@@ -1,7 +1,14 @@
 package gormutil
 
-// DefaultLimit define the default number of records to be retrieved.
-const DefaultLimit = 15
+import "strings"
+
+const (
+	// DefaultLimit define the default number of records to be retrieved.
+	DefaultLimit = 15
+
+	ASC  = "ASC"
+	DESC = "DESC"
+)
 
 // ListOptions contains offset and limit fields.
 type ListOptions struct {
@@ -29,8 +36,9 @@ func (req *ListOptions) SetDefaultOptions() {
 	}
 
 	// Order
-	if req.Order == "" {
-		req.Order = "desc"
+	req.Order = strings.ToUpper(req.Order)
+	if req.Order != ASC {
+		req.Order = DESC
 	}
 
 	// Page size
