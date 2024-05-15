@@ -25,6 +25,6 @@ func Sign(subject string, info any) (*Response, error) {
 }
 
 // Parse token by secret key.
-func Parse(tokenString string, key string) (*CustomClaims, error) {
-	return config.Parse(tokenString, key)
+func Parse(tokenString string) (*CustomClaims, error) {
+	return config.Parse(tokenString)
 }

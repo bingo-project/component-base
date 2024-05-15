@@ -71,14 +71,14 @@ func (client *Client) Sign(subject string, info any) (*Response, error) {
 }
 
 // Parse token by secret key.
-func (client *Client) Parse(tokenString string, key string) (*CustomClaims, error) {
+func (client *Client) Parse(tokenString string) (*CustomClaims, error) {
 	// Parse token
 	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, jwt.ErrSignatureInvalid
 		}
 
-		return []byte(key), nil
+		return []byte(client.SecretKey), nil
 	})
 	if err != nil {
 		return nil, err
