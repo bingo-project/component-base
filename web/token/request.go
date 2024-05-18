@@ -9,7 +9,7 @@ import (
 func ParseRequest(req *http.Request) (*CustomClaims, error) {
 	t := GetBearerToken(req)
 
-	return Parse(t, config.SecretKey)
+	return Parse(t)
 }
 
 // GetBearerToken Get bearer token from request header.
@@ -33,5 +33,5 @@ func GetBearerToken(req *http.Request) string {
 
 // ParseToken Parse given token.
 func ParseToken(req *http.Request, token string) (*CustomClaims, error) {
-	return Parse(token, config.SecretKey)
+	return Parse(token)
 }
