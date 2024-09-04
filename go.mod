@@ -1,6 +1,6 @@
 module github.com/bingo-project/component-base
 
-go 1.22
+go 1.18
 
 require (
 	github.com/MakeNowJust/heredoc/v2 v2.0.1
