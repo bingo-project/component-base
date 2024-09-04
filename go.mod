@@ -4,6 +4,7 @@ go 1.22
 
 require (
 	github.com/MakeNowJust/heredoc/v2 v2.0.1
+	github.com/duke-git/lancet/v2 v2.3.2
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/gosuri/uitable v0.0.4
@@ -20,6 +21,7 @@ require (
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
+	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.26.0
 	gorm.io/gorm v1.25.6
 )
@@ -40,9 +42,10 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

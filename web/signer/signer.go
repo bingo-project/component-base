@@ -1,25 +1,34 @@
 package signer
 
 import (
+	"crypto/hmac"
 	"crypto/md5"
+	"crypto/sha256"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
+	hash2 "hash"
 	"net/url"
 	"sort"
 	"strings"
+
+	"github.com/duke-git/lancet/v2/convertor"
 )
 
 func (c *Client) Sign(params map[string]any, sk string) (sign string) {
 	data := FormatURLParam(params)
-	data = fmt.Sprintf("%s&%s=%s", data, c.KeySK, sk)
 
+	var h hash2.Hash
 	var hash []byte
-	if c.Algorithm == AlgorithmMd5 {
-		h := md5.New()
-		h.Write([]byte(data))
-		hash = h.Sum(nil)
+	switch c.Algorithm {
+	case AlgorithmSha256:
+		h = hmac.New(sha256.New, []byte(sk))
+	default:
+		h = md5.New()
+		data = fmt.Sprintf("%s&%s=%s", data, c.KeySK, sk)
 	}
+
+	h.Write([]byte(data))
+	hash = h.Sum(nil)
 
 	return hex.EncodeToString(hash)
 }
@@ -44,7 +53,7 @@ func FormatURLParam(body map[string]any) (urlParam string) {
 	for _, k := range keys {
 		v, ok := body[k].(string)
 		if !ok {
-			v = convertToString(body[k])
+			v = convertor.ToString(body[k])
 		}
 		if v != "" {
 			buf.WriteString(url.QueryEscape(k))
@@ -59,22 +68,4 @@ func FormatURLParam(body map[string]any) (urlParam string) {
 	}
 
 	return buf.String()[:buf.Len()-1]
-}
-
-func convertToString(v any) (str string) {
-	if v == nil {
-		return ""
-	}
-	var (
-		bs  []byte
-		err error
-	)
-
-	if bs, err = json.Marshal(v); err != nil {
-		return ""
-	}
-
-	str = string(bs)
-
-	return
 }

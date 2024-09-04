@@ -8,13 +8,17 @@ type Client struct {
 type Algorithm string
 
 const (
-	AlgorithmMd5 = "md5"
+	KeySkDefault = "secret_key"
+
+	AlgorithmMd5    = "md5"
+	AlgorithmSha256 = "sha256"
 )
 
 // New default tls.Config{InsecureSkipVerify: true}
 func New() (client *Client) {
 	client = &Client{
-		KeySK: "secret_key",
+		KeySK:     "secret_key",
+		Algorithm: AlgorithmMd5,
 	}
 
 	return client
