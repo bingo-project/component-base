@@ -18,6 +18,8 @@ var (
 	KeyIP       = "ip"
 	KeyInfo     = "info"
 	KeyWatcher  = "watcher"
+	KeyCode     = "code"
+	KeyMessage  = "message"
 )
 
 // C Parse context.
@@ -70,6 +72,14 @@ func (l *zapLogger) C(ctx context.Context) *zapLogger {
 
 	if data := ctx.Value(KeyWatcher); data != nil {
 		lc.z = lc.z.With(zap.Any(KeyWatcher, data))
+	}
+
+	if data := ctx.Value(KeyCode); data != nil {
+		lc.z = lc.z.With(zap.Any(KeyCode, data))
+	}
+
+	if data := ctx.Value(KeyMessage); data != nil {
+		lc.z = lc.z.With(zap.Any(KeyMessage, data))
 	}
 
 	return lc
