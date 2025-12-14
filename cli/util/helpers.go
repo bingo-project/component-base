@@ -3,6 +3,7 @@ package util
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"net/url"
 	"os"
@@ -10,6 +11,8 @@ import (
 
 	"github.com/marmotedu/errors"
 	"github.com/olekukonko/tablewriter"
+	"github.com/olekukonko/tablewriter/renderer"
+	"github.com/olekukonko/tablewriter/tw"
 	"github.com/spf13/cobra"
 )
 
@@ -172,18 +175,46 @@ func RequireNoArguments(c *cobra.Command, args []string) {
 	}
 }
 
-func TableWriterDefaultConfig(table *tablewriter.Table) *tablewriter.Table {
-	table.SetAutoWrapText(false)
-	table.SetAutoFormatHeaders(true)
-	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
-	table.SetAlignment(tablewriter.ALIGN_LEFT)
-	table.SetCenterSeparator("")
-	table.SetColumnSeparator("")
-	table.SetRowSeparator("")
-	table.SetHeaderLine(false)
-	table.SetBorder(false)
-	table.SetTablePadding("  ") // pad with two space
-	table.SetNoWhiteSpace(true)
-
-	return table
+// NewTableWriter creates a new table writer with default configuration:
+// left-aligned, no borders, minimal separators, two-space padding.
+func NewTableWriter(w io.Writer) *tablewriter.Table {
+	return tablewriter.NewTable(w,
+		tablewriter.WithConfig(tablewriter.Config{
+			Header: tw.CellConfig{
+				Formatting: tw.CellFormatting{
+					AutoFormat: tw.On,
+				},
+				Alignment: tw.CellAlignment{
+					Global: tw.AlignLeft,
+				},
+			},
+			Row: tw.CellConfig{
+				Formatting: tw.CellFormatting{
+					AutoWrap: tw.WrapNone,
+				},
+				Alignment: tw.CellAlignment{
+					Global: tw.AlignLeft,
+				},
+				Padding: tw.CellPadding{
+					Global: tw.Padding{Left: "  ", Right: ""},
+				},
+			},
+		}),
+		tablewriter.WithRenderer(renderer.NewBlueprint(tw.Rendition{
+			Borders: tw.Border{
+				Left:   tw.Off,
+				Right:  tw.Off,
+				Top:    tw.Off,
+				Bottom: tw.Off,
+			},
+			Settings: tw.Settings{
+				Separators: tw.Separators{
+					ShowHeader:     tw.Off,
+					ShowFooter:     tw.Off,
+					BetweenRows:    tw.Off,
+					BetweenColumns: tw.Off,
+				},
+			},
+		})),
+	)
 }
