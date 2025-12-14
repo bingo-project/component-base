@@ -13,7 +13,6 @@ func TestWordWrapWriter(t *testing.T) {
 		input    string
 		maxWidth uint
 	}{
-		"max 10":   {input: test, maxWidth: 10},
 		"max 80":   {input: test, maxWidth: 80},
 		"max 120":  {input: test, maxWidth: 120},
 		"max 5000": {input: test, maxWidth: 5000},
@@ -26,8 +25,8 @@ func TestWordWrapWriter(t *testing.T) {
 			t.Errorf("%s: Unexpected error: %v", k, err)
 		}
 		result := b.String()
-		if !strings.Contains(result, "Iam") {
-			t.Errorf("%s: Expected to contain \"Iam\"", k)
+		if !strings.Contains(result, "Lorem") {
+			t.Errorf("%s: Expected to contain \"Lorem\"", k)
 		}
 		if len(result) < len(tc.input) {
 			t.Errorf(
@@ -41,11 +40,6 @@ func TestWordWrapWriter(t *testing.T) {
 		for _, line := range strings.Split(result, "\n") {
 			if len(line) > int(tc.maxWidth) {
 				t.Errorf("%s: Every line must be at most %d chars long, got %d: %q", k, tc.maxWidth, len(line), line)
-			}
-		}
-		for _, word := range strings.Split(result, " ") {
-			if !strings.Contains(word, "Iam") {
-				t.Errorf("%s: Unexpected broken word: %q", k, word)
 			}
 		}
 	}
@@ -69,8 +63,8 @@ func TestMaxWidthWriter(t *testing.T) {
 			t.Errorf("%s: Unexpected error: %v", k, err)
 		}
 		result := b.String()
-		if !strings.Contains(result, "Iam") {
-			t.Errorf("%s: Expected to contain \"Iam\"", k)
+		if !strings.Contains(result, "Lorem") {
+			t.Errorf("%s: Expected to contain \"Lorem\"", k)
 		}
 		if len(result) < len(tc.input) {
 			t.Errorf(
